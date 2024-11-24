@@ -1,0 +1,21 @@
+<!-- marker-info.component.html -->
+<div class="marker-inf"  *ngIf="dataLoaded">
+    <!-- Marker Name -->
+    <span class="markerName">{{ marker_name }}</span>
+  
+    <!-- Date with BC -->
+    <span class="date">{{ date }} {{ bc_ad }}</span>
+  
+    <!-- Text Wrap -->
+    <p>{{ text_wrap }}</p>
+  
+    <!-- Wikipedia link -->
+    <a *ngIf="wiki_link" [href]="wiki_link" target="_blank">More</a><br>
+  
+    <!-- Google Maps Directions -->
+    <a [href]="'http://maps.google.com/maps?q=loc:' + lat + ',' + long" target="_blank">Get directions</a><br>
+  
+    <!-- YouTube Link Button -->
+    <button *ngIf="link_youtube" (click)="onPlayVideo()">Play video</button>
+  </div>
+  

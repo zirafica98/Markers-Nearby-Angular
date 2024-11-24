@@ -1,0 +1,8 @@
+<form class="search" (ngSubmit)="handleSubmit($event)">
+    <div class="search-box">
+      <input class="search-txt" type="text" [(ngModel)]="value" name="location" placeholder="Type to Search"/>
+      <button class="search-btn" type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+</form>

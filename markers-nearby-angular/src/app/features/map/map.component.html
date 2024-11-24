@@ -1,0 +1,12 @@
+
+<div class="map-container" *ngIf="options1"
+     leaflet
+     [leafletOptions]="options1"
+     (leafletMapReady)="onMapReady($event)">
+<app-marker></app-marker>
+<app-search-form></app-search-form>
+</div>
+
+
+
+

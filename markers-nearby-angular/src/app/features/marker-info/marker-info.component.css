@@ -1,0 +1,71 @@
+.marker-inf {
+  position: absolute;
+  z-index: 10000000000;
+  display: block;
+  pointer-events: visiblePainted;
+  background: white;
+  width: 20%;
+  height: auto;
+  border: 2px solid black;
+  border-radius: 10px;
+  right: 1%;
+  top: 1%;
+  text-align: center;
+}
+@media screen and (max-width: 450px) {
+  .marker-inf {
+    width: 45%;
+  }
+}
+.marker-inf .markerName {
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  font-size: 14px;
+}
+.marker-inf .date {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+.marker-inf > p {
+  font-size: 12px;
+  padding: 2px;
+}
+@media screen and (max-width: 450px) {
+  .marker-inf > p {
+    max-height: 70px;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+}
+.marker-inf > a {
+  font-size: 14px;
+}
+.marker-inf > button {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+#youtubeVideo {
+  position: absolute;
+  z-index: 10000000000;
+  width: 70%;
+  height: 45vh;
+  top: 35%;
+  left: 15%;
+}
+#youtubeVideo > iframe {
+  width: 100%;
+  height: 100%;
+}
+#youtubeVideo .close {
+  position: absolute;
+  top: -3%;
+  right: -2%;
+}
+#youtubeVideo .close > button {
+  border-radius: 50%;
+  font-size: 23px;
+  cursor: pointer;
+}/*# sourceMappingURL=marker-info.component.css.map */
