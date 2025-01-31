@@ -16,7 +16,7 @@ import { MarkerInfoComponent } from './features/marker-info/marker-info.componen
 import { AppRoutingModule } from './app.routes';
 import { SearchFormComponent } from './features/search-form/search-form.component';
 import { FormsModule } from '@angular/forms';  // Dodajte ovo za ngModel
-
+import { StoryComponent } from './features/story/story.component';
 
 @NgModule({
   declarations: [
@@ -26,19 +26,20 @@ import { FormsModule } from '@angular/forms';  // Dodajte ovo za ngModel
     SafeUrlPipe,
     GeoJsonComponent,
     MarkerInfoComponent,
-    SearchFormComponent
+    SearchFormComponent,
+    StoryComponent
   ],
   imports: [
     BrowserModule,
     LeafletModule,  // Registruj LeafletModule ovde
     AngularFireModule.initializeApp(environment.firebaseConfig), // Inicijalizacija Firebase-a
     AngularFireDatabaseModule,
-    HttpClientModule,
+    HttpClientModule, // Ensure HttpClientModule is imported
     AppRoutingModule,
     FormsModule
+    
   ],
-  providers: [FirebaseDataService,FetchDataService],
+  providers: [FirebaseDataService, FetchDataService],
   bootstrap: [AppComponent]
-  
 })
 export class AppModule {}
