@@ -1,0 +1,39 @@
+<div class="list-story-container">
+  <h1>Historical Stories</h1>
+  <div class="dropdown">
+    <label for="storySelect">Select a Story:</label>
+    <select id="storySelect" (change)="onStorySelect($event)">
+      <option value="" disabled selected>Select a story</option>
+      <option *ngFor="let story of stories" [value]="story">{{ story }}</option>
+    </select>
+  </div>
+  <table class="table" *ngIf="selectedStory">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Marker Name</th>
+        <th>Text</th>
+        <th>Wiki Link</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>YouTube Link</th>
+        <th>BC/AD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detail of storyDetails">
+        <td>{{ detail.date }}</td>
+        <td>{{ detail.marker_name }}</td>
+        <td>{{ detail.text_wrap }}</td>
+        <td><a [href]="detail.wiki" target="_blank">Wiki</a></td>
+        <td>{{ detail.lat }}</td>
+        <td>{{ detail.long_marker }}</td>
+        <td><a [href]="detail.youtubeUrl" target="_blank">YouTube</a></td>
+        <td>{{ detail.bc_ad }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="selectedStory" class="start-story-link">
+    <button (click)="navigateToStory()">Start Story on Map</button>
+  </div>
+</div>

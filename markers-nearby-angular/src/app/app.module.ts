@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app.routes';
 import { SearchFormComponent } from './features/search-form/search-form.component';
 import { FormsModule } from '@angular/forms';  // Dodajte ovo za ngModel
 import { StoryComponent } from './features/story/story.component';
+import { ListStoryComponent } from './features/list-story/list-story.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { StoryComponent } from './features/story/story.component';
     GeoJsonComponent,
     MarkerInfoComponent,
     SearchFormComponent,
-    StoryComponent
+    StoryComponent,
+    ListStoryComponent
   ],
   imports: [
     BrowserModule,

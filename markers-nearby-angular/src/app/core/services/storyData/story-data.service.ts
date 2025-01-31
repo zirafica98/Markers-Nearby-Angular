@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class StoryDataService {
-  private storyDataUrl = '/assets/data/stories.json'; // Path to the JSON file
+  private storyDataUrl = 'https://mapping-history-7242b-default-rtdb.firebaseio.com/0/0'; // Path to the JSON file
 
   constructor(private http: HttpClient) {}
 
@@ -15,5 +15,9 @@ export class StoryDataService {
     return this.http.get<any>(this.storyDataUrl).pipe(
       map((data: any) => data[storyName])
     );
+  }
+
+  getStories(): Observable<any> {
+    return this.http.get<any>(this.storyDataUrl);
   }
 }
