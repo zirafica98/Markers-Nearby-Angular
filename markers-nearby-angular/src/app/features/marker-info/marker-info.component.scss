@@ -12,8 +12,18 @@
       right: 1%;
       top: 1%;
       text-align: center;
-      @media screen and (max-width:450px) {
-        width: 45%;
+      @media screen and (max-width: 768px) {
+          top: auto;
+          position: fixed;
+          bottom: 1%;
+          left: 0;
+          width: 90%;
+          margin: 0 auto;
+          background-color: white; /* Adjust background color as needed */
+          padding: 10px; /* Adjust padding as needed */
+          box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* Optional: Add shadow for better visibility */
+          z-index: 1000; /* Ensure it is above other elements */
+          height: max-content;
       }
       .markerName{
         text-align: center;

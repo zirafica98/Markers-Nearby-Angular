@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { StateService } from '../../core/services/state/state.service';
@@ -18,7 +18,10 @@ export class StoryComponent implements OnInit, AfterViewInit {
   @Input() storyData: any[] = [];
   storyName: string | null = null;
   markers: L.Marker[] = [];
+  flagMarkers: L.Marker[] = [];
   pathLayer: L.Polyline | undefined;
+  showRestartButton: boolean = false;
+  followMarker: boolean = true;
 
   markerName: string = '';
   date: string = '';
@@ -44,6 +47,12 @@ export class StoryComponent implements OnInit, AfterViewInit {
       console.log('GeoJsonComponent initialized');
       this.addMarkers();
     }
+
+    if (this.map) {
+      this.map.on('movestart', () => {
+        this.followMarker = false;
+      });
+    }
   }
 
   addMarkers(): void {
@@ -53,8 +62,10 @@ export class StoryComponent implements OnInit, AfterViewInit {
   }
 
   addMarkerSequentially(index: number): void {
-
-    if (index >= this.storyData.length) return;
+    if (index >= this.storyData.length) {
+      this.showRestartButton = true;
+      return;
+    }
 
     const startLatLng = new L.LatLng(this.storyData[index].lat, this.storyData[index].long_marker);
     const endLatLng = index < this.storyData.length - 1
@@ -71,6 +82,7 @@ export class StoryComponent implements OnInit, AfterViewInit {
 
     this.markers.push(marker);
     this.setMarkerInfo(this.storyData[index]);
+    this.addFlagMarker(startLatLng, this.storyData[index]);
 
     this.geoJsonComponent.loadGeoJsonForYear((this.storyData[index].date).split("/")[2]).then(() => {
       if (index === 0) {
@@ -94,18 +106,20 @@ export class StoryComponent implements OnInit, AfterViewInit {
       }).addTo(this.stateService.getMap());
     }
 
-    this.animateMarker(marker, startLatLng, endLatLng, duration,index, () => {
+    this.animateMarker(marker, startLatLng, endLatLng, duration, () => {
       setTimeout(() => {
         if (index < this.storyData.length - 1) {
           marker.remove();
-          this.setMarkerInfo(this.storyData[index+1]);
+          this.setMarkerInfo(this.storyData[index + 1]);
           this.addMarkerSequentially(index + 1);
+        } else {
+          this.showRestartButton = true;
         }
       }, 10000); // Wait for 10 seconds at each event point
     });
   }
 
-  animateMarker(marker: L.Marker, startLatLng: L.LatLng, endLatLng: L.LatLng, duration: number,index:number, callback: () => void) {
+  animateMarker(marker: L.Marker, startLatLng: L.LatLng, endLatLng: L.LatLng, duration: number, callback: () => void) {
     const startTime = performance.now();
     const tolerance = 0.0001; // Tolerance value for comparing coordinates
 
@@ -123,6 +137,10 @@ export class StoryComponent implements OnInit, AfterViewInit {
         this.pathLayer.addLatLng(currentLatLng);
       }
 
+      if (this.followMarker && this.stateService.getMap()) {
+        this.stateService.getMap().setView(currentLatLng, this.stateService.getMap().getZoom(), { animate: true });
+      }
+
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
@@ -137,8 +155,34 @@ export class StoryComponent implements OnInit, AfterViewInit {
     requestAnimationFrame(animate);
   }
 
+  addFlagMarker(latLng: L.LatLng, data: any): void {
+    const flagMarker = L.marker(latLng, {
+      icon: L.icon({
+        iconUrl: 'https://mappinghistorybucket.s3.us-east-2.amazonaws.com/MappingHistoryMarker/red-flag.gif', // Replace with the URL of your flag icon
+        iconSize: [25, 25],
+      }),
+    }).addTo(this.stateService.getMap());
+
+    this.flagMarkers.push(flagMarker);
+
+    flagMarker.on('click', () => {
+      const popupContent = `
+        <div>
+          <h3>${data.marker_name}</h3>
+          <p>${data.text_wrap}</p>
+          <a href="${data.wiki}" target="_blank">Read more</a>
+          <br>
+        </div>
+      `;
+      flagMarker.bindPopup(popupContent).openPopup();
+    });
+  }
+
   restartStory(): void {
+    this.showRestartButton = false;
     this.markers.forEach(marker => marker.remove());
+    this.flagMarkers.forEach(flagMarker => flagMarker.remove());
+    this.flagMarkers = [];
     if (this.pathLayer) {
       this.pathLayer.remove();
       this.pathLayer = undefined;

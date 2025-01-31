@@ -4,6 +4,7 @@
      (leafletMapReady)="onMapReady($event)">
   <app-marker></app-marker>
   <app-story *ngIf="storyData" [map]="map" [storyData]="storyData"></app-story>
+  <app-geo-json></app-geo-json>
   <app-search-form></app-search-form>
 </div>
 

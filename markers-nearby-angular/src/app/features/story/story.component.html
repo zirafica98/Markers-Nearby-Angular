@@ -1,4 +1,4 @@
-<div>
+<div class="story-container">
   <app-marker-info
     [date]="date"
     [marker_name]="markerName"
@@ -11,5 +11,5 @@
     [dataLoaded]="dataLoaded">
   </app-marker-info>
   <app-geo-json></app-geo-json>
-  <button (click)="restartStory()" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000; padding: 10px 20px; background-color: #8B4513; color: white; border: none; border-radius: 5px; cursor: pointer;">Restart Story</button>
+  <button *ngIf="showRestartButton" (click)="restartStory()" class="restart-button">Restart Story</button>
 </div>
